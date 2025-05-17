@@ -14,5 +14,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set timestamp
+      id: vars
+      run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag cart:${{ steps.vars.outputs.timestamp }}
+
+
+    - name: push
+      run: docker push devopssupanut/cart:${{ steps.vars.outputs.timestamp }}
